@@ -1,0 +1,28 @@
+name: Bot Pinterest 3 Jam
+
+on:
+  schedule:
+    # Jalan tiap 3 jam (Jam 0, 3, 6, 9, dst)
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # Tombol manual buat ngetes
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Jalankan Script
+        env:
+          PINTEREST_TOKEN: ${{ secrets.PINTEREST_TOKEN }}
+          BOARD_ID: ${{ secrets.BOARD_ID }}
+        run: python main.py
